@@ -57,12 +57,18 @@ class HistoryResource extends Resource
         ];
     }
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListHistories::route('/'),
-            'create' => Pages\CreateHistory::route('/create'),
-            'edit' => Pages\EditHistory::route('/{record}/edit'),
+            // 'create' => Pages\CreateHistory::route('/create'),
+            // 'edit' => Pages\EditHistory::route('/{record}/edit'),
         ];
     }
 }

@@ -2,10 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Notifications\Notification;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Session;
 use App\Filament\Resources\TransaksiResource\Pages;
 use App\Filament\Resources\TransaksiResource\RelationManagers;
 use App\Models\Barang;
+use App\Models\Keranjang;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -62,13 +67,30 @@ class TransaksiResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\AddToCartAction::make(),
+                Action::make('addToCart')
+                    ->label('Add')
+                    ->button()
+                    ->form([
+                        TextInput::make('quantity')->label('Quantity')->required()->numeric()->minValue(1),
+                    ])
+                    ->action(function ($record, $data) {
+                        Keranjang::create([
+                            'nama_barang' => $record->nama_barang,
+                            'harga' => $record->harga,
+                            'total_harga' => $record->harga * $data['quantity'],
+                            'kode_barang' => $record->kode_barang,
+                            'stok' => $record->stok,
+                            'kategori' => $record->kategori,
+                            'quantity' => $data['quantity'],
+                        ]);
+                        Notification::make()
+                            ->title('Barang Dimasukkan ke Keranjang')
+                            ->icon('heroicon-s-shopping-bag')
+                            ->iconColor('success')
+                            ->send();
+                    })
+                    ->icon('heroicon-s-plus-circle'),
             ]);
-        // ->bulkActions([
-        //     Tables\Actions\BulkActionGroup::make([
-        //         Tables\Actions\DeleteBulkAction::make(),
-        //     ]),
-        // ]);
     }
 
 
@@ -88,7 +110,7 @@ class TransaksiResource extends Resource
     {
         return [
             'index' => Pages\ListTransaksis::route('/'),
-            // 'edit' => Pages\EditTransaksi::route('/{record}/edit'),
+            // 'edit' => Pages\EditTransaksi::route('/{record}/edit')--
         ];
     }
 }

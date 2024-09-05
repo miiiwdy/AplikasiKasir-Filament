@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nama_barang');
             $table->decimal('harga', 10, 2);
+            $table->decimal('total_harga', 10, 2);
             $table->string('kode_barang')->unique();
-            $table->integer('stok');
             $table->string('kategori');
+            $table->integer('quantity');
             $table->timestamps();
         });
     }
