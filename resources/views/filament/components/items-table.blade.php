@@ -10,7 +10,7 @@
         @foreach ($items as $item)
             <tr>
                 <td>{{ $item->nama_barang }}</td>
-                <td>{{ $item->harga }}</td>
+                <td>{{ $item->harga * $item->quantity }}</td>
                 <td>{{ $item->quantity }}</td>
             </tr>
         @endforeach
