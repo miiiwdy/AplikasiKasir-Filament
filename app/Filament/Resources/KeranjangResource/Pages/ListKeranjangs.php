@@ -14,6 +14,8 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\KeranjangResource;
 use App\Models\History;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Blade;
 
 class ListKeranjangs extends ListRecords
 {
@@ -41,7 +43,7 @@ class ListKeranjangs extends ListRecords
     {
         return [
             Action::make('delete_keranjang')->label('Hapus Keranjang')->button()->color('danger')
-                ->action(function(){
+                ->action(function () {
                     Keranjang::truncate();
                     Notification::make()
                         ->title('Keranjang dihapus')
@@ -113,6 +115,20 @@ class ListKeranjangs extends ListRecords
                         ->icon('heroicon-s-shopping-bag')
                         ->iconColor('success')
                         ->send();
+
+                    session(['purchaseData' => $keranjangItems->map(function ($item) {
+                        return [
+                            'kode_transaksi' => $item->kode_transaksi,
+                            'nama_barang' => $item->nama_barang,
+                            'total_harga' => $item->harga * $item->quantity,
+                            'kode_barang' => $item->kode_barang,
+                            'quantity' => $item->quantity,
+                            'payment' => $item->payment,
+                            'total_harga_all_barang' => $item->total_harga_all_barang,
+                        ];
+                    })]);
+
+                    return redirect()->route('download.receipt');
                 }),
         ];
     }

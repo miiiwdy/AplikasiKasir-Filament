@@ -2,18 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\HistoryResource\Pages;
-use App\Filament\Resources\HistoryResource\RelationManagers;
-use App\Models\Checkout;
-use App\Models\History;
 use Filament\Forms;
+use Filament\Tables;
+use App\Models\History;
+use App\Models\Checkout;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
-use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\HistoryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Filament\Resources\HistoryResource\RelationManagers;
 
 class HistoryResource extends Resource
 {
@@ -50,13 +53,35 @@ class HistoryResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                Filter::make('date_range')
+                    ->form([
+                        DatePicker::make('start_date')
+                            ->label('Start Date')
+                            ->required(),
+                        DatePicker::make('end_date')
+                            ->label('End Date')
+                            ->required(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['start_date'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date)
+                            )
+                            ->when(
+                                $data['end_date'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date)
+                            );
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
                     ->color('primary')
                     ->button()
                     ->modalContent(fn($record) => (new static)->getItemsTable($record)),
+            ])
+            ->bulkActions([
+                ExportBulkAction::make()
             ]);
     }
 
