@@ -6,7 +6,7 @@ use App\Filament\Resources\TransaksiResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListTransaksis extends ListRecords
+class ListTransaksi extends ListRecords
 {
     protected static string $resource = TransaksiResource::class;
 

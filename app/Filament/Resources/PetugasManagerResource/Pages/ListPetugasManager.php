@@ -6,7 +6,7 @@ use App\Filament\Resources\PetugasManagerResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListPetugasManagers extends ListRecords
+class ListPetugasManager extends ListRecords
 {
     protected static string $resource = PetugasManagerResource::class;
 

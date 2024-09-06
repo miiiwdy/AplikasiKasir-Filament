@@ -86,7 +86,7 @@ class PetugasManagerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPetugasManagers::route('/'),
+            'index' => Pages\ListPetugasManager::route('/'),
             'create' => Pages\CreatePetugasManager::route('/create'),
             'edit' => Pages\EditPetugasManager::route('/{record}/edit'),
         ];

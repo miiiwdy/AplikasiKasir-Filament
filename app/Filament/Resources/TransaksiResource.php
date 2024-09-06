@@ -110,7 +110,7 @@ class TransaksiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTransaksis::route('/'),
+            'index' => Pages\ListTransaksi::route('/'),
             // 'edit' => Pages\EditTransaksi::route('/{record}/edit')--
         ];
     }
