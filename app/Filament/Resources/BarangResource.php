@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BarangResource\Pages;
-use App\Filament\Resources\BarangResource\RelationManagers;
-use App\Models\Barang;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Barang;
+use App\Models\History;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\BarangResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\BarangResource\RelationManagers;
 
 class BarangResource extends Resource
 {
@@ -48,7 +49,8 @@ class BarangResource extends Resource
                         'makanan_segar' => 'Makanan Segar',
                         'makanan_olahan_kemasan' => 'Makanan Olahan dan Kemasan',
                     ])
-            ]);
+                ]);
+                
     }
 
     public static function table(Table $table): Table

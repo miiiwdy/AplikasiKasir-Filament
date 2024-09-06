@@ -13,8 +13,16 @@ return new class extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
-            $table->string('aksi');
-            $table->string('detail');
+            $table->string('aksi')->nullable();
+            $table->string('kode_transaksi')->nullable();
+            $table->decimal('total_harga_all_barang', 10, 2)->nullable();
+            $table->string('nama_barang')->nullable();
+            $table->decimal('harga', 10, 2)->nullable();
+            $table->string('kode_barang')->nullable();
+            $table->integer('stok')->nullable();
+            $table->string('kategori')->nullable();
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }

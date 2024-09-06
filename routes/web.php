@@ -11,11 +11,3 @@ Route::get('/', function () {
 
 //getdatakeranjang
 Route::get('/keranjang', [KeranjangResource::class, 'getTableData']);
-
-//endpoin buat checkout detail
-// Route::get('/api/checkout-details/{kode_transaksi}', function ($kode_transaksi) {
-//     $checkout = Checkout::where('kode_transaksi', $kode_transaksi)->first();
-//     return response()->json($checkout);
-// });
-
-// Filament::routes();

@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\KeranjangResource;
+use App\Models\History;
 
 class ListKeranjangs extends ListRecords
 {
@@ -27,8 +28,6 @@ class ListKeranjangs extends ListRecords
         }
         return $randstring;
     }
-
-
     protected function getItemsTable()
     {
         $items = Keranjang::all();
@@ -41,6 +40,15 @@ class ListKeranjangs extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('delete_keranjang')->label('Hapus Keranjang')->button()->color('danger')
+                ->action(function(){
+                    Keranjang::truncate();
+                    Notification::make()
+                        ->title('Keranjang dihapus')
+                        ->icon('heroicon-s-shopping-bag')
+                        ->iconColor('danger')
+                        ->send();
+                }),
             Action::make('addToCart')
                 ->label('Checkout Barang')
                 ->button()
@@ -85,6 +93,18 @@ class ListKeranjangs extends ListRecords
                             'total_harga_all_barang' => $total_harga_all_barang,
                         ]);
                     }
+                    History::create([
+                        'aksi' => 'Checkout',
+                        'kode_transaksi' => $rd,
+                        'total_harga_all_barang' => $total_harga_all_barang,
+                        'nama_barang' => null,
+                        'harga' => null,
+                        'kode_barang' => null,
+                        'stok' => null,
+                        'kategori' => null,
+                        'name' => null,
+                        'email' => null,
+                    ]);
 
                     Keranjang::truncate();
 
